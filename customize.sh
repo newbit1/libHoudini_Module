@@ -136,12 +136,13 @@ REPLACE="
   fi
 
   RELEASE=$(getprop ro.build.version.release)
-  if [ "10" != $RELEASE ]; then
-    abort "Only support Android 10"
+  if [ "10" != $RELEASE ] | [ "11" != $RELEASE ]; then
+    abort "Only support Android 10 or Android 11"
   fi 
  
   ui_print "- Extracting Lib Houdini 9 Files"
-  unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
+  [ "10" = $RELEASE ] && unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
+  [ "11" = $RELEASE ] && unzip -o "$ZIPFILE" 'system11/*' -d $MODPATH >&2
 
 # Only some special files require specific permissions
 # This function will be called after on_install is done
